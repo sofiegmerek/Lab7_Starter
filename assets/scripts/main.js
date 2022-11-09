@@ -68,20 +68,57 @@ async function getRecipes() {
   // EXPOSE - START (All expose numbers start with A)
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
+  console.log(localStorage.getItem('recipes'));
+  if(localStorage.getItem('recipes') ){
+  let recipe = localStorage.getItem('recipes');
+  let parse = JSON.parse(recipe);
+  const myarray = new Array();
+  for(let i = 0; i < parse.length; i++){
+    myarray.push(parse[i]);
+  }
+  return myarray;
+  }
   /**************************/
   // The rest of this method will be concerned with requesting the recipes
   // from the network
   // A2. TODO - Create an empty array to hold the recipes that you will fetch
+  let myRecipeArr = new Array();
+
   // A3. TODO - Return a new Promise. If you are unfamiliar with promises, MDN
   //            has a great article on them. A promise takes one parameter - A
   //            function (we call these callback functions). That function will
   //            take two parameters - resolve, and reject. These are functions
   //            you can call to either resolve the Promise or Reject it.
+let myPromise = new Promise( async (resolve, reject) =>{
+ // A4.
+for( let url of RECIPE_URLS){
+//A5
+  try{
+   const result =  await fetch(url);
+    const recipe = await result.json();
+    myRecipeArr.push(recipe);
+    if(myRecipeArr.length == RECIPE_URLS.length){
+      saveRecipesToStorage(myRecipeArr);
+    }
+  }catch(error){
+    console.error(error);
+    reject(error);
+
+  }
+
+}
+
+
+
+});
+
+return myPromise;
+
   /**************************/
   // A4-A11 will all be *inside* the callback function we passed to the Promise
   // we're returning
   /**************************/
-  // A4. TODO - Loop through each recipe in the RECIPE_URLS array constant
+ // A4. TODO - Loop through each recipe in the RECIPE_URLS array constant
   //            declared above
   // A5. TODO - Since we are going to be dealing with asynchronous code, create
   //            a try / catch block. A6-A9 will be in the try portion, A10-A11
