@@ -47,7 +47,8 @@ self.addEventListener('fetch', function (event) {
   // B7. TODO - Respond to the event by opening the cache using the name we gave
   //            above (CACHE_NAME)
 
-  console.log("hello");
+ // console.log("hello");
+ 
 
   event.respondWith(caches.open(CACHE_NAME).then((cache) => {
     // Respond with the image from the cache or from the network
